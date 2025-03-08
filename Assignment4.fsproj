@@ -9,8 +9,6 @@
     <ItemGroup>
       <Compile Include="Language.fs" />
       <Compile Include="Programs.fs" />
-      <Compile Include="State-yellow-red.fs" />
-      <Compile Include="Eval-yellow-red.fs" />
       <Compile Include="State.fs" />
       <Compile Include="Eval.fs" />
     </ItemGroup>
