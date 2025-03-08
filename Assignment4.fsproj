@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <RootNamespace>Assignment4</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Include="Language.fs" />
+      <Compile Include="Programs.fs" />
+      <Compile Include="State-yellow-red.fs" />
+      <Compile Include="Eval-yellow-red.fs" />
+      <Compile Include="State.fs" />
+      <Compile Include="Eval.fs" />
+    </ItemGroup>
+
+</Project>
