@@ -1,5 +1,6 @@
 ﻿module Interpreter.State
 
+    open Interpreter.Memory
     open Result
     open Language
     
@@ -11,14 +12,23 @@
         let c = v.[0]
         (System.Char.IsAsciiLetter c || c = '_') && (String.forall (fun x -> x = '_' || System.Char.IsAsciiLetterOrDigit x)) v
     
-    type state = { siMap: Map<string,int> }
+    type state = {
+        siMap: Map<string,int>
+        mem : memory
+    }
     
-    let mkState ()= {siMap = Map.empty}
+    let mkState memSize = {
+        siMap = Map.empty
+        mem = empty memSize
+    }
              
     let declare x st =
         if validVariableName x && not (reservedVariableName x)
                && not (Map.containsKey x st.siMap) then
-                Some { siMap = st.siMap.Add(x,0) }
+                Some {
+                    siMap = st.siMap.Add(x,0)
+                    mem = st.mem
+                }
             else
                 None
     
@@ -30,9 +40,24 @@
             | Some _ -> Some v
             | None -> None
         if Map.containsKey x st.siMap then
-            Some { siMap = st.siMap.Change (x,f) }
+            Some {
+                siMap = st.siMap.Change (x,f)
+                mem = st.mem
+            }
         else
             None
+            
+    let alloc x size st =
+        match alloc size st.mem with
+        | Some (mem',ptr) ->
+            let newState = { st with mem = mem' }
+            match getVar x newState with
+            | Some _ -> setVar x ptr newState
+            | None ->
+                match declare x newState with
+                | Some newNewState -> setVar x ptr newNewState
+                | None -> None
+        | None -> None
     
     let push _ = failwith "not implemented"
     

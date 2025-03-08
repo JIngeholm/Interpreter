@@ -1,5 +1,7 @@
-open Interpreter.Language
+module Interpreter.Program
 
-let [<EntryPoint>] main _ =
-    printfn "%A" (Num 42)
-    0
+    open Interpreter.Language
+
+    let [<EntryPoint>] main _ =
+        printfn "%A" (Num 42)
+        0

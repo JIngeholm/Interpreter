@@ -2,57 +2,35 @@
 
     open Result
     open Language
-    open State
-    
+    open State                                             
+               
     let rec arithEval a st =
         match a with
         | Num x -> Some x
         | Var v -> getVar v st
         | Add(b,c) ->
-            match (arithEval b st, arithEval c st) with
-            | (Some x, Some y) -> Some (x + y)
-            | _ -> None
-        | Mul(b,c) ->
-            match (arithEval b st, arithEval c st) with
-            | Some x, Some y -> Some(x * y)
-            | _ -> None
-        | Div(b,c) ->
-            match arithEval b st, arithEval c st with
-            | Some _, Some y when y = 0 -> None
-            | Some x, Some y -> Some(x / y)
-            | _ -> None
-        | Mod(b,c) ->                                                           
-            match arithEval b st, arithEval c st with                               
-            | Some _, Some y when y = 0 -> None
-            | Some x, Some y -> Some(x % y)
-            | _ -> None                                              
-                
-    let rec arithEval2 a st =
-        match a with
-        | Num x -> Some x
-        | Var v -> getVar v st
-        | Add(b,c) ->
-            arithEval2 c st
+            arithEval c st
             |> Option.bind
-                   (fun cv -> arithEval2 b st
+                   (fun cv -> arithEval b st
                            |> Option.map (fun bv -> bv + cv))
         | Mul(b,c) ->
-            arithEval2 c st
+            arithEval c st
             |> Option.bind
-                   (fun cv -> arithEval2 b st
+                   (fun cv -> arithEval b st
                            |> Option.map (fun bv -> bv * cv))
         | Div(b,c) ->
-            arithEval2 c st
+            arithEval c st
             |> Option.bind
                    (fun cv -> if cv = 0 then None
-                              else arithEval2 b st
+                              else arithEval b st
                               |> Option.map (fun bv -> bv / cv))
         | Mod(b,c) ->                                                           
-            arithEval2 c st
+            arithEval c st
             |> Option.bind
                    (fun cv -> if cv = 0 then None
-                              else arithEval2 b st
+                              else arithEval b st
                               |> Option.map (fun bv -> bv % cv))
+        | _ -> Some 0
         
     let rec boolEval b st =
         match b with
@@ -99,3 +77,4 @@
                 | None -> None
             | Some false -> Some st
             | None -> None
+        | _ -> Some st
