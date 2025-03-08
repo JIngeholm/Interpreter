@@ -113,9 +113,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\joha5\\Documents\\UNI\\4.Sem\\Funktionel\\Assignments\\Assignments\\Interpreter\\Assignment4.fsproj",
-      "projectName": "Assignment4",
-      "projectPath": "C:\\Users\\joha5\\Documents\\UNI\\4.Sem\\Funktionel\\Assignments\\Assignments\\Interpreter\\Assignment4.fsproj",
+      "projectUniqueName": "C:\\Users\\joha5\\Documents\\UNI\\4.Sem\\Funktionel\\Assignments\\Assignments\\Interpreter\\Interpreter.fsproj",
+      "projectName": "Interpreter",
+      "projectPath": "C:\\Users\\joha5\\Documents\\UNI\\4.Sem\\Funktionel\\Assignments\\Assignments\\Interpreter\\Interpreter.fsproj",
       "packagesPath": "C:\\Users\\joha5\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\joha5\\Documents\\UNI\\4.Sem\\Funktionel\\Assignments\\Assignments\\Interpreter\\obj\\",
       "projectStyle": "PackageReference",
