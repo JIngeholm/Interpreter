@@ -37,7 +37,7 @@ module Interpreter.Memory
             
         
     let setMem ptr v mem =
-        if ptr > mem.next then
+        if not(Map.containsKey ptr mem.mMap) then
             None
         else
             let newMap = Map.add ptr v mem.mMap

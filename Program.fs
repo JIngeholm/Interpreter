@@ -1,7 +1,17 @@
-module Interpreter.Program
+// For more information see https://aka.ms/fsharp-console-apps
 
-    open Interpreter.Language
+open Interpreter.Programs
+open Interpreter.Eval
+open Interpreter.State
 
-    let [<EntryPoint>] main _ =
-        printfn "%A" (Num 42)
-        0
+let runProgram prog =
+    42 |>
+    Some |>
+    mkState 10 |>
+    stmntEval prog |>
+    ignore
+
+// Uncomment the program you want to run
+
+runProgram guessANumber
+//runProgram bubbleSort
