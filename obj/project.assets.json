@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net7.0": {
-      "FSharp.Core/8.0.403": {
+      "FSharp.Core/9.0.201": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/FSharp.Core.dll": {
@@ -59,15 +59,15 @@
     }
   },
   "libraries": {
-    "FSharp.Core/8.0.403": {
-      "sha512": "ldNIn4IksrJL/X3rF4R/y9pa3RmwkcGYQ3xFMdbJj8dJ9Q49J735m6sMy3MbCK9gj3YoCsxlyFeExCiNDy3gHQ==",
+    "FSharp.Core/9.0.201": {
+      "sha512": "Ozq4T0ISTkqTYJ035XW/JkdDDaXofbykvfyVwkjLSqaDZ/4uNXfpf92cjcMI9lf9CxWqmlWHScViPh/4AvnWcw==",
       "type": "package",
-      "path": "fsharp.core/8.0.403",
+      "path": "fsharp.core/9.0.201",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "fsharp.core.8.0.403.nupkg.sha512",
+        "fsharp.core.9.0.201.nupkg.sha512",
         "fsharp.core.nuspec",
         "lib/netstandard2.0/FSharp.Core.dll",
         "lib/netstandard2.0/FSharp.Core.xml",
@@ -104,7 +104,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "FSharp.Core >= 8.0.403"
+      "FSharp.Core >= 9.0.201"
     ]
   },
   "packageFolders": {
@@ -126,7 +126,7 @@
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files\\dotnet\\sdk\\8.0.407\\FSharp\\library-packs": {},
+        "C:\\Users\\joha5\\.dotnet\\sdk\\9.0.200\\FSharp\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -139,7 +139,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net7.0": {
@@ -148,7 +149,7 @@
           "FSharp.Core": {
             "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
             "target": "Package",
-            "version": "[8.0.403, )",
+            "version": "[9.0.201, )",
             "generatePathProperty": true
           }
         },
@@ -163,12 +164,26 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[7.0.20, 7.0.20]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[7.0.20, 7.0.20]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[7.0.20, 7.0.20]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.407\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\joha5\\.dotnet\\sdk\\9.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

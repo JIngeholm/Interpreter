@@ -13,6 +13,6 @@
     <SourceRoot Include="C:\Users\joha5\.nuget\packages\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\joha5\.nuget\packages\fsharp.core\8.0.403</PkgFSharp_Core>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\joha5\.nuget\packages\fsharp.core\9.0.201</PkgFSharp_Core>
   </PropertyGroup>
 </Project>

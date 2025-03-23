@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "ImdbBZoha/8=",
+  "dgSpecHash": "o01fIkhwVoQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\joha5\\Documents\\UNI\\4.Sem\\Funktionel\\Assignments\\Assignments\\Interpreter\\Interpreter.fsproj",
   "expectedPackageFiles": [
-    "C:\\Users\\joha5\\.nuget\\packages\\fsharp.core\\8.0.403\\fsharp.core.8.0.403.nupkg.sha512"
+    "C:\\Users\\joha5\\.nuget\\packages\\fsharp.core\\9.0.201\\fsharp.core.9.0.201.nupkg.sha512",
+    "C:\\Users\\joha5\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.20\\microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\joha5\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.20\\microsoft.windowsdesktop.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\joha5\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.20\\microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512"
   ],
   "logs": []
 }
