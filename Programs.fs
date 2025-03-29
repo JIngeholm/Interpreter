@@ -1,7 +1,7 @@
 module Interpreter.Programs
 
     open Interpreter.Language
-    
+        
     let factorial x =
         Declare "result" />
         Declare "x" />
@@ -224,5 +224,10 @@ module Interpreter.Programs
             Print([MemRead (Var "z")], "% "))
         
                     
+    let recFactorialFun =
+        If(Var "x" .=. Num 0, Return (Num 1), Return (FunctionCall("factorial", [Var "x" .-. Num 1]) .*. Var "x" ) /> Print ([Var "x"], "This should never happen %."))
         
-      
+    let factorialProg : program = Map.ofList(["factorial", (["x"], recFactorialFun)])
+    let recFactorial x =
+        Declare "result" />
+        ("result" .<-. FunctionCall("factorial", [Num x]))

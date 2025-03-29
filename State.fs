@@ -79,6 +79,9 @@
         
     let getMem ptr st = getMem ptr st.mem
     
-    let push _ = failwith "not implemented"
     
+    
+    let push _ = failwith "not implemented"
     let pop _ = failwith "not implemented"
+    let pushFrame _ = failwith "not implementd"
+    let popFrame _ = failwith "not implemented"
