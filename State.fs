@@ -18,7 +18,7 @@
         rng: System.Random
     }
     
-    let mkState memSize (oseed: int option) = {
+    let mkState memSize (oseed: int option) (prog: program) = {
         siMap = Map.empty
         mem = empty memSize
         rng = match oseed with

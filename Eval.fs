@@ -3,7 +3,7 @@
     open System
     open Result
     open Language
-    open State
+    open StateMonad
               
               
     let rec readInt() =
@@ -15,154 +15,248 @@
           readInt()
           
      
-    let rec arithEval a st =
+     
+     
+     
+    let rec arithEval a  =
         match a with
-        | Num x -> Some x
-        | Var v -> getVar v st
+        | Num x -> ret x
+        | Var v -> getVar v
         | Add(b,c) ->
-            arithEval c st
-            |> Option.bind
-                   (fun cv -> arithEval b st
-                           |> Option.map (fun bv -> bv + cv))
+            arithEval c >>= fun cv ->
+            arithEval b >>= fun bv ->
+            ret (bv + cv)
         | Mul(b,c) ->
-            arithEval c st
-            |> Option.bind
-                   (fun cv -> arithEval b st
-                           |> Option.map (fun bv -> bv * cv))
+            arithEval c >>= fun cv ->
+            arithEval b >>= fun bv ->
+            ret (bv * cv)
         | Div(b,c) ->
-            arithEval c st
-            |> Option.bind
-                   (fun cv -> if cv = 0 then None
-                              else arithEval b st
-                              |> Option.map (fun bv -> bv / cv))
-        | Mod(b,c) ->                                                           
-            arithEval c st
-            |> Option.bind
-                   (fun cv -> if cv = 0 then None
-                              else arithEval b st
-                              |> Option.map (fun bv -> bv % cv))
+            arithEval c >>= fun cv ->
+            if cv = 0 then
+                fail
+            else
+                arithEval b >>= fun bv ->
+                ret ( bv / cv)
+        | Mod(b,c) ->
+            arithEval c >>= fun cv ->
+            if cv = 0 then
+                fail
+            else
+                arithEval b >>= fun bv ->
+                ret ( bv % cv)
         | MemRead e1 ->
-            arithEval e1 st |> Option.bind (fun ptr -> getMem ptr st)
+            arithEval e1 >>= fun ptr -> getMem ptr
         | Random ->
-            Some(random st)
+            random
         | Read ->
-            Some ( readInt() )
+            ret ( readInt() )
         | Cond(b, a1, a2) ->
-            boolEval b st |> Option.bind
-                    (fun bv -> if bv = true then arithEval a1 st
-                                            else arithEval a2 st) 
-    and boolEval b st =
+            boolEval b >>= fun bv ->
+            if bv = true then
+                arithEval a1
+            else
+                arithEval a2
+        | FunctionCall(s,_) -> failwith "not implemented" 
+    and boolEval b  =
         match b with
-        | TT -> Some true
+        | TT -> ret true
         | Eq(a,c) ->
-            match arithEval a st, arithEval c st with
-            | Some valX, Some valY -> Some(valX = valY)
-            | _ -> None
+            arithEval a >>= fun av ->
+            arithEval c >>= fun cv ->
+            ret ( av = cv )
         | Lt(a,c) ->
-            match arithEval a st, arithEval c st with
-            | Some valX, Some valY -> Some(valX < valY)
-            | _ -> None
+            arithEval a >>= fun av ->
+            arithEval c >>= fun cv ->
+            ret ( av < cv )
         | Conj(a,c) ->
-            match boolEval a st, boolEval c st with
-            | Some boolX, Some boolY -> Some(boolX && boolY)
-            | _ -> None
+            boolEval a >>= fun av ->
+            boolEval c >>= fun cv ->
+            ret ( av && cv )
         | Not a ->
-            match boolEval a st with
-            | Some x -> Some(not x)
-            | _ -> None
+            boolEval a >>= fun av ->
+            ret ( not av )
+    
+    
+    
+    
+    
+    
+    let rec arithEval2 a  =
+        match a with
+        | Num x -> eval { return x }
+        | Var v -> getVar v
+        | Add(b,c) ->
+            eval {
+                let! bv = arithEval2 b
+                let! cv = arithEval2 c
+                return bv + cv
+            }
+        | Mul(b,c) ->
+            eval {
+                let! bv = arithEval2 b
+                let! cv = arithEval2 c
+                return bv * cv
+            }
+        | Div(b,c) ->
+            eval {
+                let! cv = arithEval2 c
+                if cv = 0 then
+                    return! fail
+                else
+                    let! bv = arithEval2 b
+                    return bv + cv
+            }
+        | Mod(b,c) ->
+            eval {
+                let! cv = arithEval2 c
+                if cv = 0 then
+                    return! fail
+                else
+                    let! bv = arithEval2 b
+                    return bv % cv
+            }
+        | MemRead e1 ->
+            eval{
+                let! ptr = arithEval2 e1
+                return! getMem ptr
+            }
+        | Random ->
+            random
+        | Read ->
+            eval{ return readInt() }
+        | Cond(b, a1, a2) ->
+            eval{
+                let! bv = boolEval2 b
+                if bv = true then
+                    return! arithEval2 a1
+                else
+                    return! arithEval2 a2
+            }
+        | FunctionCall(s,_) ->
+            failwith "not implemented" 
+    and boolEval2 b  =
+        match b with
+        | TT -> eval{ return true }
+        | Eq(a,c) ->
+            eval{
+                let! av = arithEval2 a
+                let! cv = arithEval2 c
+                return av = cv
+            }
+        | Lt(a,c) ->
+            eval{
+                let! av = arithEval2 a
+                let! cv = arithEval2 c
+                return av < cv
+            }
+        | Conj(a,c) ->
+            eval{
+                let! av = boolEval2 a
+                let! cv = boolEval2 c
+                return av && cv
+            }
+        | Not a ->
+            eval{
+                let! av = boolEval2 a
+                return not av
+            }
+    
+    
+    
+    
+    
     
     
     (*
     It didn't really make sense to me to use the split function to reconstruct
     the string in the mergeString function. Using substrings seemed much easier and simpler.
     *)
-    let rec mergeString es (s: string) st  =
+    let rec mergeString es (s: string)   =
         let rec aux es (acc: string) =
             match es with
-            | [] -> Some acc
-            | x :: _ ->
-                match arithEval x st with
-                | Some x' ->
+            | [] -> eval { return acc }
+            | x :: xs ->
+                eval{
+                    let! xv = arithEval2 x
                     let i = acc.IndexOf("%")
                     if i >= 0 then
                         let before = acc.Substring(0,i)
                         let after = acc.Substring(i+1)
-                        let acc' = before + (string x') + after
-                        aux es acc'
+                        let acc' = before + (string xv) + after
+                        return! aux xs acc'
                     else
-                        Some acc
-                | None -> None
+                        return acc
+                }
         aux es s
         
-    let rec mergeString2 es (s: string) st =
-        let rec aux es (s:string) c =
-            match es with
-            | [] -> Some (c s)
-            | x :: _ ->
-                match arithEval x st with
-                | Some x' ->
-                    let i = s.IndexOf("%")
-                    if i >= 0 then
-                        let before = s.Substring(0,i)
-                        let after = s.Substring(i+1)
-                        let acc' = before + (string x') + after
-                        aux es acc' c
-                    else
-                        Some(c s)
-                | None -> None
-        aux es s id
     
-    let rec stmntEval s st =
+    
+    
+    
+    
+    
+    
+    let rec stmntEval s  =
         match s with
-        | Skip -> Some st
-        | Declare v -> declare v st
+        | Skip -> eval { return () }
+        | Declare v -> eval{ return! declare v } 
         | Assign(v,a) ->
-            match arithEval a st with
-            | Some x -> setVar v x st
-            | None -> None
+            eval{
+                let! x = arithEval2 a
+                return! setVar v x
+            }
         | Seq(s1,s2) ->
-            match stmntEval s1 st with
-            | None -> None
-            | Some st' -> stmntEval s2 st'
+            eval{
+                do! stmntEval s1
+                do! stmntEval s2
+            }
         | If(guard,s1,s2) ->
-            match boolEval guard st with
-            | Some true -> stmntEval s1 st
-            | Some false -> stmntEval s2 st
-            | None -> None
+            eval{
+                let! bv = boolEval2 guard
+                if bv then
+                    return! stmntEval s1
+                else
+                    return! stmntEval s2
+            }
         | While(guard,s') ->
-            match boolEval guard st with
-            | Some true ->
-                match stmntEval s' st with
-                | Some st' -> stmntEval (While(guard,s')) st'
-                | None -> None
-            | Some false -> Some st
-            | None -> None
+            eval{
+                let! bv = boolEval2 guard
+                if bv then
+                    do! stmntEval s'
+                    return! stmntEval (While(guard,s'))
+                else
+                    return ()
+            }
         | Alloc(x,e) ->
-            match getVar x st, arithEval e st with
-            | Some ptr, Some size ->
-                match alloc x size st with
-                    | Some st'' -> Some st''
-                    | _ -> None
-            | _ -> None
+            eval{
+                let! ptr = getVar x
+                let! size = arithEval2 e
+                return! alloc x size
+            }
         | Free(e1,e2) ->
-            match arithEval e1 st, arithEval e2 st with
-            | Some ptr, Some size ->
-                match free ptr size st with
-                | Some st' -> Some st'
-                | _ -> None
-            | _ -> None
+            eval{
+                let! ptr = arithEval2 e1
+                let! size = arithEval2 e2
+                return! free ptr size
+            }
         | MemWrite(e1,e2) ->
-            match arithEval e1 st, arithEval e2 st with
-            | Some ptr, Some v ->
-                match setMem ptr v st with
-                | Some st' -> Some st'
-                | _ -> None
-            | _ -> None
+            eval{
+                let! ptr = arithEval2 e1
+                let! v = arithEval2 e2
+                return! setMem ptr v
+            }
         | Print(es, s) ->
-            match mergeString es s st with
-            | Some s' ->
+            eval{
+                let! s' = mergeString es s
                 printfn "%s" s'
-                Some st
-            | None -> None
+                return ()
+            }
+        | Return _ ->
+            failwith "not implemented" 
+            
+    
+    
+    
+    
     
     let split (s1 : string) (s2 : string) = s2 |> s1.Split |> Array.toList
