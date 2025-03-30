@@ -2,7 +2,7 @@
     
     type state
 
-    val mkState : int -> option<int> -> state
+    val mkState : int -> option<int> -> program -> state
 
     val random : state -> int
  
