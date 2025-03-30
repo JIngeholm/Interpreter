@@ -83,5 +83,5 @@
     
     let push _ = failwith "not implemented"
     let pop _ = failwith "not implemented"
-    let pushFrame _ = failwith "not implementd"
+    let pushFrame _ = failwith "not implemented"
     let popFrame _ = failwith "not implemented"
