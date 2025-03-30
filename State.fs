@@ -56,15 +56,13 @@
             None
             
     let alloc x size st =
-        match alloc size st.mem with
-        | Some (mem',ptr) ->
-            let newState = { st with mem = mem'; siMap = st.siMap }
-            match getVar x newState with
-            | Some _ -> setVar x ptr newState
-            | None ->
-                match declare x newState with
-                | Some newNewState -> setVar x ptr newNewState
-                | None -> None
+        match getVar x st with
+        | Some _ ->
+            match alloc size st.mem with
+            | Some (mem',ptr) ->
+                let newState = { st with mem = mem'; siMap = st.siMap }
+                setVar x ptr newState
+            | None -> None
         | None -> None
     
     let free ptr size st =
