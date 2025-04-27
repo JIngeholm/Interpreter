@@ -252,7 +252,14 @@
                 return ()
             }
         | Return _ ->
-            failwith "not implemented" 
+            failwith "not implemented"
+        | Fork ss ->
+            eval{
+                do! ss
+                    |> List.map stmntEval 
+                    |> Fork 
+            }
+        | Join -> eval { return ()}
             
     
     

@@ -64,6 +64,8 @@ type stmnt =
     | Free of aexpr * aexpr
     | Print of aexpr list * string
     | Return of aexpr
+    | Fork of stmnt list
+    | Join
     
 let (/>) s1 s2 = Seq(s1, s2)
 let IT(b, c) = If(b, c, Skip)

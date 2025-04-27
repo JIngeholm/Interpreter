@@ -68,6 +68,18 @@
 
     let random  = SM ( fun st -> Some ( random st , st) )
     
+    let fork ss =
+        SM (fun st ->
+            let rec evalAll st monads =
+                match monads with
+                | [] -> Some((), st)
+                | SM m :: rest ->
+                    match m st with
+                    | Some ((), _) -> evalAll st rest
+                    | None -> None
+            evalAll st ss
+        )        
+    
     let evalState st a =
         let (SM f) = a
         match f st with
