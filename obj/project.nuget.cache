@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "o01fIkhwVoQ=",
+  "dgSpecHash": "WiFZvcNPcPk=",
   "success": true,
   "projectFilePath": "C:\\Users\\joha5\\Documents\\UNI\\4.Sem\\Funktionel\\Assignments\\Assignments\\Interpreter\\Interpreter.fsproj",
   "expectedPackageFiles": [
+    "C:\\Users\\joha5\\.nuget\\packages\\fparsec\\1.1.1\\fparsec.1.1.1.nupkg.sha512",
     "C:\\Users\\joha5\\.nuget\\packages\\fsharp.core\\9.0.201\\fsharp.core.9.0.201.nupkg.sha512",
     "C:\\Users\\joha5\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.20\\microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
     "C:\\Users\\joha5\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.20\\microsoft.windowsdesktop.app.ref.7.0.20.nupkg.sha512",
